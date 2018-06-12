@@ -85,8 +85,6 @@ ${result}
     let contents = await this.getFileContents(path, fileObjects[path]);
     const importStatements = this.getImportsInFile(contents);
 
-    console.log(path, importStatements);
-
     // Remove the import statements first so the line numbers match up.
     for (const importStatement of importStatements) {
       contents = this.removeByLoc(contents, importStatement.loc);
