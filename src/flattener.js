@@ -52,8 +52,8 @@ export class Flattener {
       lines[startLine] = lines[startLine].substring(0, loc.start.column);
       lines[endLine] = lines[endLine].substring(loc.end.column);
 
-      if (endLine - startLine > 1) {
-        lines.splice(startLine + 1, endLine - startLine - 1);
+      for (let i = startLine + 1; i < endLine; i++) {
+        lines[i] = "";
       }
     }
 
@@ -73,6 +73,7 @@ export class Flattener {
  * ===============================================
 */
 
+
 ${result}
 `;
   };
@@ -91,16 +92,16 @@ ${result}
     }
 
     // Now flatten and jam onto the top of the file.
+    let contentsToAppend = "";
+
     for (const importStatement of importStatements) {
-      const importFlattened = await this.visit(
+      contentsToAppend += await this.visit(
         importStatement.path,
         visited,
         fileObjects
       );
-
-      contents = importFlattened + contents;
     }
 
-    return contents;
+    return contentsToAppend + contents;
   };
 }
