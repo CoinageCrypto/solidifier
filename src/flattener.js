@@ -1,4 +1,4 @@
-import parser from './lib/solidity-parser-antlr';
+import parser from 'solidity-parser-antlr';
 
 export class Flattener {
 	cachedFileContents = {};
