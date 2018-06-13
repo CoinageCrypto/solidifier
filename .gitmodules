@@ -1,0 +1,3 @@
+[submodule "src/lib/solidity-parser-antlr"]
+	path = src/lib/solidity-parser-antlr
+	url = https://github.com/federicobond/solidity-parser-antlr.git
