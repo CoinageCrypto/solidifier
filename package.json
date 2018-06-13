@@ -6,7 +6,8 @@
 		"classnames": "^2.2.6",
 		"react": "^16.4.0",
 		"react-dom": "^16.4.0",
-		"react-scripts": "1.1.4"
+		"react-scripts": "1.1.4",
+		"solidity-parser-antlr": "github:CoinageCrypto/solidity-parser-antlr"
 	},
 	"scripts": {
 		"start": "react-scripts start",
