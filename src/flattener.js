@@ -4,13 +4,19 @@ export class Flattener {
 	cachedFileContents = {};
 
 	getImportsInFile = contents => {
+		console.log('getting imports');
+		console.log('contents', contents);
+
 		const ast = parser.parse(contents, { tolerant: true, loc: true });
+		console.log('ast', ast);
 		const imports = [];
 
 		// Search for import directives
 		parser.visit(ast, {
 			ImportDirective: node => imports.push(node),
 		});
+
+		console.log('imports', imports);
 
 		return imports;
 	};
