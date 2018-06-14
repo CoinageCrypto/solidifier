@@ -3,19 +3,21 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"babel-polyfill": "^6.26.0",
 		"classnames": "^2.2.6",
-		"react": "^16.4.0",
-		"react-dom": "^16.4.0",
-		"react-scripts": "1.1.4",
 		"solidity-parser-antlr": "github:CoinageCrypto/solidity-parser-antlr"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
+		"start": "gatsby develop",
+		"build": "gatsby build"
 	},
 	"devDependencies": {
-		"eslint-config-last": "^0.0.5"
+		"babel-eslint": "^8.2.3",
+		"eslint": "^4.19.1",
+		"eslint-config-last": "^0.0.5",
+		"eslint-config-prettier": "^2.9.0",
+		"eslint-plugin-prettier": "^2.6.0",
+		"gatsby": "^1.9.271",
+		"prettier": "^1.13.5"
 	}
 }

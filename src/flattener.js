@@ -3,6 +3,12 @@ import parser from 'solidity-parser-antlr';
 export class Flattener {
 	cachedFileContents = {};
 
+	constructor() {
+		this.getFileContents = this.getFileContents.bind(this);
+		this.flatten = this.flatten.bind(this);
+		this.visit = this.visit.bind(this);
+	}
+
 	getImportsInFile = contents => {
 		console.log('getting imports');
 		console.log('contents', contents);
@@ -21,7 +27,7 @@ export class Flattener {
 		return imports;
 	};
 
-	getFileContents = async (path, fileObject) => {
+	getFileContents = async function(path, fileObject) {
 		// If we've already done it, no worries, give them the contents.
 		const cached = this.cachedFileContents[path];
 		if (cached) return cached;
@@ -66,7 +72,7 @@ export class Flattener {
 		return lines.join('\n');
 	};
 
-	flatten = async (fileObjects, path) => {
+	flatten = async function(fileObjects, path) {
 		const visited = new Set();
 
 		const result = await this.visit(path, visited, fileObjects);
@@ -85,7 +91,7 @@ ${result}
 	};
 
 	// Depth first visit just like the solidity compiler.
-	visit = async (path, visited, fileObjects) => {
+	visit = async function(path, visited, fileObjects) {
 		if (visited.has(path)) return '';
 		visited.add(path);
 
