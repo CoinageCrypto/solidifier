@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 
-exports.modifyWebpackConfig = ({ config, stage }) => {
+exports.modifyWebpackConfig = ({ config }) => {
 	// This is because we get
 	// -------------------
 	// ERROR  Failed to compile with 3 errors                                 20:28:24
