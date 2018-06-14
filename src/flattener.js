@@ -10,11 +10,7 @@ export class Flattener {
 	}
 
 	getImportsInFile = contents => {
-		console.log('getting imports');
-		console.log('contents', contents);
-
 		const ast = parser.parse(contents, { tolerant: true, loc: true });
-		console.log('ast', ast);
 		const imports = [];
 
 		// Search for import directives
@@ -22,9 +18,19 @@ export class Flattener {
 			ImportDirective: node => imports.push(node),
 		});
 
-		console.log('imports', imports);
-
 		return imports;
+	};
+
+	getPragmasInFile = contents => {
+		const ast = parser.parse(contents, { tolerant: true, loc: true });
+		const pragmas = [];
+
+		// Search for import directives
+		parser.visit(ast, {
+			PragmaDirective: node => pragmas.push(node),
+		});
+
+		return pragmas;
 	};
 
 	getFileContents = async function(path, fileObject) {
@@ -75,10 +81,20 @@ export class Flattener {
 	flatten = async function(fileObjects, path) {
 		const visited = new Set();
 
-		const result = await this.visit(path, visited, fileObjects);
+		let content = await this.visit(path, visited, fileObjects);
 
-		return `
-/* ===============================================
+		// Now we need to strip all but the first pragma statement.
+		const pragmas = this.getPragmasInFile(content);
+
+		// Ignore the first one.
+		pragmas.shift();
+
+		// Strip the rest
+		for (const pragma of pragmas) {
+			content = this.removeByLoc(content, pragma.loc);
+		}
+
+		return `/* ===============================================
  * Flattened with Solidifier by Coinage
  * 
  * https://solidifier.coina.ge
@@ -86,11 +102,11 @@ export class Flattener {
 */
 
 
-${result}
+${content}
 `;
 	};
 
-	// Depth first visit just like the solidity compiler.
+	// Depth first visit, outputting the leaves first.
 	visit = async function(path, visited, fileObjects) {
 		if (visited.has(path)) return '';
 		visited.add(path);
