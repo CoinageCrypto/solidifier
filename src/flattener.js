@@ -53,6 +53,27 @@ export class Flattener {
 		return contents;
 	};
 
+	removeExcessWhitespace = contents => {
+		const lines = contents.split(/\r?\n/);
+		const resultingLines = [];
+
+		let whitespaceLineCounter = 0;
+		let whitespacePattern = /^[\s\r\n]*$/;
+		for (const line of lines) {
+			if (whitespacePattern.test(line)) {
+				whitespaceLineCounter++;
+			} else {
+				whitespaceLineCounter = 0;
+			}
+
+			if (whitespaceLineCounter <= 2) {
+				resultingLines.push(line);
+			}
+		}
+
+		return resultingLines.join('\n');
+	};
+
 	// Loc is "location" as defined by solidity-parser-antlr.
 	removeByLoc = (contents, loc) => {
 		const lines = contents.split(/\r?\n/);
@@ -93,6 +114,8 @@ export class Flattener {
 		for (const pragma of pragmas) {
 			content = this.removeByLoc(content, pragma.loc);
 		}
+
+		content = this.removeExcessWhitespace(content);
 
 		return `/* ===============================================
  * Flattened with Solidifier by Coinage
