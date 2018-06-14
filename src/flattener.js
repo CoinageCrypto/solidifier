@@ -123,8 +123,6 @@ export class Flattener {
  * https://solidifier.coina.ge
  * ===============================================
 */
-
-
 ${content}
 `;
 	};
@@ -146,9 +144,16 @@ ${content}
 		let contentsToAppend = '';
 
 		for (const importStatement of importStatements) {
+			contentsToAppend += '\n\n';
 			contentsToAppend += await this.visit(importStatement.path, visited, fileObjects);
 		}
 
-		return contentsToAppend + contents;
+		return `
+
+${contentsToAppend}
+
+////////////////// ${path} //////////////////
+
+${contents}`;
 	};
 }
