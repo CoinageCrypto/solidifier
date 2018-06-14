@@ -19,6 +19,10 @@ exports.modifyWebpackConfig = ({ config }) => {
 	});
 
 	// Disable uglify's mangle feature because the build doesn't work when mangled.
+	// Behaviour when mangle is on is that
+	// const ast = parser.parse(contents, { tolerant: true, loc: true });
+	// runs successfully, but the ast variable has one single object in it
+	// so it hasn't parsed fully.
 	const { plugins } = config._config;
 
 	for (const plugin of plugins) {
@@ -28,14 +32,10 @@ exports.modifyWebpackConfig = ({ config }) => {
 	}
 
 	// Add our polyfills before anything else in specific bundles.
-	const { app, cms, commons } = config._config.entry;
+	const { app, commons } = config._config.entry;
 
 	if (app) {
 		config._config.entry.app = [require.resolve('./polyfills'), app];
-	}
-
-	if (cms) {
-		cms.unshift(require.resolve('./polyfills'));
 	}
 
 	if (commons) {
