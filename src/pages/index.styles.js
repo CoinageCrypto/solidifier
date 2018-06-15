@@ -10,4 +10,4 @@ export const dropZoneHovered = css({
 	border: '5px solid red',
 });
 
-export default 'warning suppressor';
+// This comment is here with the words 'export default' to suppress gatsby's warning about invalid pages.
