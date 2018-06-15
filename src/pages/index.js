@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import cx from 'classnames';
-import { Flattener } from '../flattener';
-import './index.css';
+import { cx } from 'emotion';
+import { Flattener } from 'solidifier/flattener';
+import { dropZone, dropZoneHovered } from 'solidifier/styles';
 
-class App extends PureComponent {
+export default class IndexPage extends PureComponent {
 	state = {
 		hovered: false,
 		files: null,
@@ -92,10 +92,10 @@ class App extends PureComponent {
 		}
 
 		return (
-			<div className="app">
+			<div>
 				{!files && (
 					<div
-						className={cx('dropZone', { hovered })}
+						className={cx(dropZone, { [dropZoneHovered]: hovered })}
 						onDragEnter={this.onDropZoneHover}
 						onDragOver={this.onDropZoneHover}
 						onDragLeave={this.onDropZoneLeave}
@@ -121,5 +121,3 @@ class App extends PureComponent {
 		);
 	}
 }
-
-export default App;

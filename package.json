@@ -5,6 +5,14 @@
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
 		"classnames": "^2.2.6",
+		"emotion": "^9.2.3",
+		"emotion-server": "^9.2.3",
+		"gatsby-plugin-emotion": "^1.1.17",
+		"gatsby-plugin-google-analytics": "^1.0.31",
+		"gatsby-plugin-netlify": "^1.0.21",
+		"gatsby-plugin-react-helmet": "^2.0.11",
+		"react-emotion": "^9.2.3",
+		"react-helmet": "^5.2.0",
 		"solidity-parser-antlr": "github:CoinageCrypto/solidity-parser-antlr"
 	},
 	"scripts": {
