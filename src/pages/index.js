@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { cx } from 'emotion';
 import { Flattener } from 'solidifier/flattener';
-import * as Styles from '../styles';
+import * as Styles from './index.styles';
 
 import Logo from '../images/coinage_logo.svg';
 

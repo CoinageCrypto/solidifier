@@ -1,6 +1,6 @@
 import { css, cx } from 'emotion';
 
-import './global.css';
+import '../styles/global.css';
 
 const bp = {
 	desktop: '@media (max-width: 991px)',
@@ -193,3 +193,5 @@ export const actionsBar = css({
 		},
 	},
 });
+
+// This comment is here with the words 'export default' to suppress gatsby's warning about invalid pages.

@@ -44,3 +44,13 @@ exports.modifyWebpackConfig = ({ config }) => {
 
 	return config;
 };
+
+// We like to keep our styles alongside our pages. These are not actual pages,
+// so when they get created by Gatsby, go ahead and remove them immediately.
+exports.onCreatePage = ({ page, boundActionCreators }) => {
+	const { deletePage } = boundActionCreators;
+
+	if (/\.styles\/$/.test(page.path)) {
+		deletePage(page);
+	}
+};
