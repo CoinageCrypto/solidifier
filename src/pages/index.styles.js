@@ -1,7 +1,5 @@
 import { css } from 'emotion';
 
-import './global.css';
-
 export const dropZone = css({
 	border: '5px solid blue',
 	width: '200px',
@@ -11,3 +9,5 @@ export const dropZone = css({
 export const dropZoneHovered = css({
 	border: '5px solid red',
 });
+
+export default 'warning suppressor';

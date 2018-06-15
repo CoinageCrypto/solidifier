@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { cx } from 'emotion';
 import { Flattener } from 'solidifier/flattener';
-import { dropZone, dropZoneHovered } from 'solidifier/styles';
+import { dropZone, dropZoneHovered } from './index.styles';
 
 export default class IndexPage extends PureComponent {
 	state = {
