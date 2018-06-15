@@ -2,20 +2,21 @@
 
 Takes solidity code and flattens it into a concatenated version ready for Etherscan's verification tool, all in your browser! No server needed, no Python, nothing, just a browser and your folder of `.sol` files!
 
-## Cloning
+![GitHub release](https://img.shields.io/github/release/CoinageCrypto/solidifier.svg)
+![License](https://img.shields.io/github/license/CoinageCrypto/solidifier.svg)
+[![Supported by Coinage](https://coina.ge/assets/supported-by-coinage-badge.svg)](https://coina.ge/?utm_source=github&utm_medium=badge&utm_campaign=solidifier)
 
-This project uses git submodules instead of NPM for `solidity-parser-antlr` because the NPM module is an ES6 module, which Create React App's Webpack config doesn't actually support.
+### [https://solidifier.coina.ge](https://solidifier.coina.ge)
 
-After cloning, go to the root directory of this project and run:
+## Running Locally
 
-```
-git submodule update --init --recursive
-```
-
-## Running
+Note: This project uses [yarn](https://yarnpkg.com/lang/en/docs/getting-started/).
 
 ```
-yarn start
+$ git clone https://github.com/CoinageCrypto/solidifier.git
+$ cd solidifier
+$ yarn
+$ yarn start
 ```
 
 ## Building
@@ -23,3 +24,5 @@ yarn start
 ```
 yarn build
 ```
+
+Your built files are now in `public/`.
