@@ -100,20 +100,32 @@ export default class IndexPage extends PureComponent {
 	}
 
 	startParse = async function(path) {
+		this.log('----------------');
+
 		if (!path) path = this.state.currentPath;
 
 		const { files, insertFileNames, stripExcessWhitespace } = this.state;
 
-		// Create a new one each time so we have clean context
-		const result = await flatten({ files, path, insertFileNames, stripExcessWhitespace });
+		try {
+			const result = await flatten({ files, path, insertFileNames, stripExcessWhitespace });
 
-		console.log(result);
+			this.setState({ result, currentPath: path });
+			this.log(`Successfully flattened ${path}`);
+		} catch (error) {
+			this.log(`An error was encountered while trying to parse your solidity code. Error details:
 
-		this.setState({ result, currentPath: path });
+${error.name}
+${error.message}
+${error.stack}
 
-		this.textResult.focus();
-		this.textResult.select();
-		this.textResult.scrollTop = 0;
+This usually means you have invalid syntax that solc would not be able to compile. Correct any syntax errors and try again.`);
+		}
+
+		if (this.textResult) {
+			this.textResult.focus();
+			this.textResult.select();
+			this.textResult.scrollTop = 0;
+		}
 	};
 
 	optionChanged(option) {
@@ -181,7 +193,7 @@ export default class IndexPage extends PureComponent {
 								<div className={Styles.consoleBottom}>
 									<div className={Styles.bottomDrawer}>
 										<p>Log</p>
-										<textarea ref={textLog => (this.textLog = textLog)}>{log}</textarea>
+										<textarea ref={textLog => (this.textLog = textLog)} value={log} readOnly />
 									</div>
 
 									<div className={Styles.actionsBar}>
