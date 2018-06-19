@@ -138,7 +138,7 @@ This usually means you have invalid syntax that solc would not be able to compil
 		return (
 			<div>
 				<h1 className={Styles.header}>
-					<a href="https://coin.age">
+					<a href="https://coina.ge">
 						<img src={Logo} alt="Coinage" />
 					</a>{' '}
 					Solidifier
