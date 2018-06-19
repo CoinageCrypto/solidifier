@@ -242,8 +242,15 @@ This usually means you have invalid syntax that solc would not be able to compil
 				</div>
 				<footer className={Styles.footer}>
 					Like this tool? Tip us with ether at{' '}
-					<code>0x4a4107db991a2763AB0f6B8AbEa130C0fbdc5ac6</code>, or visit us at{' '}
-					<a href="https://coina.ge">coina.ge</a>
+					<code>
+						<a
+							href="https://www.myetherwallet.com/?to=0x4a4107db991a2763AB0f6B8AbEa130C0fbdc5ac6#send-transaction"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							0x4a4107db991a2763AB0f6B8AbEa130C0fbdc5ac6
+						</a>
+					</code>, or visit us at <a href="https://coina.ge">coina.ge</a>
 				</footer>
 			</div>
 		);
