@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { cx } from 'emotion';
-import { Flattener } from 'solidifier/flattener';
+import { flatten } from 'solidifier/flattener';
 import * as Styles from './index.styles';
 
 import Logo from '../images/coinage_logo.svg';
@@ -96,7 +96,9 @@ export default class IndexPage extends PureComponent {
 
 	startParse = async function(path) {
 		// Create a new one each time so we have clean context
-		const result = await new Flattener().flatten(this.state.files, path);
+		const result = await flatten(this.state.files, path);
+
+		console.log(result);
 
 		this.setState({ result, currentPath: path });
 
@@ -154,9 +156,11 @@ export default class IndexPage extends PureComponent {
 										{!this.state.currentPath ? (
 											<p>← Select entry file to compile</p>
 										) : (
-											<textarea ref={textResult => (this.textResult = textResult)}>
-												{result}
-											</textarea>
+											<textarea
+												ref={textResult => (this.textResult = textResult)}
+												value={result}
+												readOnly
+											/>
 										)}
 									</div>
 								</div>
