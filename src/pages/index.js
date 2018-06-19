@@ -5,17 +5,22 @@ import * as Styles from './index.styles';
 
 import Logo from '../images/coinage_logo.svg';
 
+const defaultState = {
+	files: null,
+	hovered: false,
+	log: null,
+	selectedFile: null,
+
+	// Flattener Options
+	insertFileNames: true,
+	stripExcessWhitespace: true,
+};
+
 export default class IndexPage extends PureComponent {
-	state = {
-		hovered: false,
-		files: null,
-		selectedFile: null,
-		log: null,
-	};
+	state = defaultState;
 
 	constructor() {
 		super();
-		this.defaultState = this.state;
 		this.startParse = this.startParse.bind(this);
 		this.startAgain = this.startAgain.bind(this);
 		this.log = this.log.bind(this);
@@ -91,12 +96,16 @@ export default class IndexPage extends PureComponent {
 	};
 
 	startAgain() {
-		this.setState(this.defaultState);
+		this.setState(defaultState);
 	}
 
 	startParse = async function(path) {
+		if (!path) path = this.state.currentPath;
+
+		const { files, insertFileNames, stripExcessWhitespace } = this.state;
+
 		// Create a new one each time so we have clean context
-		const result = await flatten(this.state.files, path);
+		const result = await flatten({ files, path, insertFileNames, stripExcessWhitespace });
 
 		console.log(result);
 
@@ -107,8 +116,12 @@ export default class IndexPage extends PureComponent {
 		this.textResult.scrollTop = 0;
 	};
 
+	optionChanged(option) {
+		this.setState(option, () => this.startParse());
+	}
+
 	render() {
-		const { hovered, files, result, log } = this.state;
+		const { hovered, files, result, log, insertFileNames, stripExcessWhitespace } = this.state;
 
 		return (
 			<div>
@@ -179,10 +192,20 @@ export default class IndexPage extends PureComponent {
 							<div className={Styles.options}>
 								<h2>Options</h2>
 								<label>
-									<input type="checkbox" /> Insert file names
+									<input
+										type="checkbox"
+										onClick={e => this.optionChanged({ insertFileNames: e.target.checked })}
+										checked={insertFileNames}
+									/>{' '}
+									Insert file names
 								</label>
 								<label>
-									<input type="checkbox" /> Option 2
+									<input
+										type="checkbox"
+										onClick={e => this.optionChanged({ stripExcessWhitespace: e.target.checked })}
+										checked={stripExcessWhitespace}
+									/>{' '}
+									Strip excess whitespace
 								</label>
 							</div>
 						</div>

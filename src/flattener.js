@@ -82,10 +82,10 @@ const removeByLoc = (contents, loc) => {
 	return lines.join('\n');
 };
 
-export const flatten = async function(fileObjects, path) {
+export const flatten = async ({ files, path, insertFileNames, stripExcessWhitespace }) => {
 	const visited = new Set();
 
-	let content = await visit(path, visited, fileObjects);
+	let content = await visit({ path, files, visited, insertFileNames });
 
 	// Now we need to strip all but the first pragma statement.
 	const pragmas = getPragmasInFile(content);
@@ -98,7 +98,9 @@ export const flatten = async function(fileObjects, path) {
 		content = removeByLoc(content, pragma.loc);
 	}
 
-	content = removeExcessWhitespace(content);
+	if (stripExcessWhitespace) {
+		content = removeExcessWhitespace(content);
+	}
 
 	return `/* ===============================================
  * Flattened with Solidifier by Coinage
@@ -111,11 +113,11 @@ ${content}
 };
 
 // Depth first visit, outputting the leaves first.
-const visit = async (path, visited, fileObjects) => {
+const visit = async ({ path, files, visited, insertFileNames }) => {
 	if (visited.has(path)) return '';
 	visited.add(path);
 
-	let contents = await getFileContents(path, fileObjects[path]);
+	let contents = await getFileContents(path, files[path]);
 	const importStatements = getImportsInFile(contents);
 
 	// Remove the import statements first so the line numbers match up.
@@ -127,15 +129,27 @@ const visit = async (path, visited, fileObjects) => {
 	let contentsToAppend = '';
 
 	for (const importStatement of importStatements) {
-		contentsToAppend += '\n\n';
-		contentsToAppend += await visit(importStatement.path, visited, fileObjects);
+		contentsToAppend += `
+
+${await visit({
+			path: importStatement.path,
+			files,
+			visited,
+			insertFileNames,
+		})}`;
 	}
 
-	return `
+	let result = contentsToAppend;
 
-${contentsToAppend}
+	if (insertFileNames) {
+		result += `
 
-////////////////// ${path} //////////////////
+////////////////// ${path} //////////////////`;
+	}
+
+	result += `
 
 ${contents}`;
+
+	return result;
 };
