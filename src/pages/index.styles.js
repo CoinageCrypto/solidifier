@@ -113,7 +113,7 @@ export const header = css({
 	padding: '20px',
 	cursor: 'default',
 	'& img': {
-		verticalAlign: 'middle',
+		display: 'block',
 		marginRight: '20px',
 	},
 });
@@ -191,6 +191,17 @@ export const actionsBar = css({
 		'&:first-child': {
 			marginRight: '10px',
 		},
+	},
+});
+
+export const footer = css({
+	textAlign: 'center',
+	padding: '20px',
+	'& a': {
+		color: 'inherit',
+	},
+	'& code': {
+		fontWeight: 600,
 	},
 });
 
