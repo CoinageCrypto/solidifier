@@ -1,0 +1,16 @@
+{
+	"name": "solidifier-cli",
+	"version": "1.0.0",
+	"description": "The command line interface for soldifier",
+	"main": "index.js",
+	"repository": "https://github.com/CoinageCrypto/solidifier.git",
+	"author": "Kevin Brown",
+	"license": "MIT",
+	"private": false,
+	"bin": {
+		"solidifier": "./index.js"
+	},
+	"dependencies": {
+		"yargs": "^11.0.0"
+	}
+}

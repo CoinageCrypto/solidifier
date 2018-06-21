@@ -1,9 +1,10 @@
 {
-  "private": true,
-  "scripts": {
-    "start": "cd packages/solidifier-website && yarn start"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+	"private": true,
+	"scripts": {
+		"build": "cd packages/solidifier-website && yarn build",
+		"start": "cd packages/solidifier-website && yarn start"
+	},
+	"workspaces": [
+		"packages/*"
+	]
 }
