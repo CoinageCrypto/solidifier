@@ -1,33 +1,9 @@
 {
-	"name": "solidifier",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"babel-polyfill": "^6.26.0",
-		"classnames": "^2.2.6",
-		"emotion": "^9.2.3",
-		"emotion-server": "^9.2.3",
-		"gatsby-plugin-emotion": "^1.1.17",
-		"gatsby-plugin-google-analytics": "^1.0.31",
-		"gatsby-plugin-netlify": "^1.0.21",
-		"gatsby-plugin-react-helmet": "^2.0.11",
-		"prop-types": "^15.6.1",
-		"react-emotion": "^9.2.3",
-		"react-helmet": "^5.2.0",
-		"solidity-parser-antlr": "github:CoinageCrypto/solidity-parser-antlr"
-	},
-	"scripts": {
-		"start": "gatsby develop",
-		"build": "gatsby build"
-	},
-	"devDependencies": {
-		"babel-eslint": "^8.2.3",
-		"babel-plugin-module-resolver": "^3.1.1",
-		"eslint": "^4.19.1",
-		"eslint-config-last": "^0.0.5",
-		"eslint-config-prettier": "^2.9.0",
-		"eslint-plugin-prettier": "^2.6.0",
-		"gatsby": "^1.9.271",
-		"prettier": "^1.13.5"
-	}
+  "private": true,
+  "scripts": {
+    "start": "cd packages/solidifier-website && yarn start"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

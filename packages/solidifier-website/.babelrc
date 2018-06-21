@@ -16,7 +16,7 @@
 			{
 				"root": ["."],
 				"alias": {
-					"solidifier": "./src"
+					"website": "./src"
 				}
 			}
 		]
