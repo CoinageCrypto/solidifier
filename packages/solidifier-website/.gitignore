@@ -83,4 +83,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Gatsby ache
-**/.cache/
+.cache/
