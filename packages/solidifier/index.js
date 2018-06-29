@@ -24,17 +24,15 @@ const getPragmasInFile = contents => {
 	return pragmas;
 };
 
-const getFileContents = async (path, fileObject) => {
-	const contents = await new Promise((resolve, reject) => {
+const getFileContents = fileObject => (
+	new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.onload = () => resolve(reader.result);
 		reader.onerror = () => reject(reader.error);
 
 		reader.readAsText(fileObject);
-	});
-
-	return contents;
-};
+	})
+);
 
 const removeExcessWhitespace = contents => {
 	const lines = contents.split(/\r?\n/);
@@ -82,6 +80,25 @@ const removeByLoc = (contents, loc) => {
 	return lines.join('\n');
 };
 
+const resolvePath = (basePath, relativePath) => {
+	const base = basePath.split('/');
+
+	// The base path is the actual .sol file we found the import in, e.g. "whatever.sol" or "whatever/thing/something.sol";
+	// So when we split, we need to remove the .sol file from the path to get the base folder of the contract.
+	base.pop();
+
+	// Ok, now walk through the relative path, ignoring '.' and construct a new path.
+	for (const chunk of relativePath.split('/')) {
+		if (chunk === '..') {
+			base.pop();
+		} else if (chunk !== '.') {
+			base.push(chunk);
+		}
+	}
+
+	return base.join('/');
+};
+
 export const flatten = async ({ files, path, insertFileNames, stripExcessWhitespace }) => {
 	const visited = new Set();
 
@@ -117,7 +134,7 @@ const visit = async ({ path, files, visited, insertFileNames }) => {
 	if (visited.has(path)) return '';
 	visited.add(path);
 
-	let contents = await getFileContents(path, files[path]);
+	let contents = await getFileContents(files[path]);
 	const importStatements = getImportsInFile(contents);
 
 	// Remove the import statements first so the line numbers match up.
@@ -132,7 +149,7 @@ const visit = async ({ path, files, visited, insertFileNames }) => {
 		contentsToAppend += `
 
 ${await visit({
-			path: importStatement.path,
+			path: resolvePath(path, importStatement.path),
 			files,
 			visited,
 			insertFileNames,
