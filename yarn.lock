@@ -7739,9 +7739,9 @@ sockjs@^0.3.15:
     faye-websocket "^0.10.0"
     uuid "^3.0.1"
 
-"solidity-parser-antlr@github:CoinageCrypto/solidity-parser-antlr":
-  version "0.2.12"
-  resolved "https://codeload.github.com/CoinageCrypto/solidity-parser-antlr/tar.gz/dd8e8f24705aeb18330509f6bc283699674b71e0"
+solidity-parser-antlr@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/solidity-parser-antlr/-/solidity-parser-antlr-0.3.0.tgz#980c57ca524ebc3315b916b18248f08a6cd43266"
 
 sort-keys@^1.0.0:
   version "1.1.2"
