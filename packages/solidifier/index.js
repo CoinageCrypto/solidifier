@@ -91,7 +91,7 @@ const resolvePath = (basePath, relativePath) => {
 	for (const chunk of relativePath.split('/')) {
 		if (chunk === '..') {
 			base.pop();
-		} else if (chunk !== '.') {
+		} else if (chunk !== '.' && chunk !== base[base.length - 1]) {
 			base.push(chunk);
 		}
 	}
