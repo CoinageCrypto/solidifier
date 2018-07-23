@@ -134,9 +134,8 @@ const visit = async ({ path, files, visited, insertFileNames }) => {
 	if (visited.has(path)) return '';
 	visited.add(path);
 
+	if (!files[path]) throw new Error(`Unable to find contract at path '${path}'. Most likely you need to start from a different base directory when you drag your contracts in, or it is also possible that your contracts don't compile.`);
 	let contents = await getFileContents(files[path]);
-
-	if (!contents) throw new Error(`Unable to find contract at path '${path}'. Most likely you need to start from a different base directory when you drag your contracts in, or it is also possible that your contracts don't compile.`);
 
 	const importStatements = getImportsInFile(contents);
 
