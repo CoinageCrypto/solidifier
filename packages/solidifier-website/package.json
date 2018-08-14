@@ -1,6 +1,6 @@
 {
 	"name": "solidifier-website",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"private": true,
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
@@ -13,7 +13,8 @@
 		"gatsby-plugin-react-helmet": "^2.0.11",
 		"prop-types": "^15.6.1",
 		"react-emotion": "^9.2.3",
-		"react-helmet": "^5.2.0"
+		"react-helmet": "^5.2.0",
+		"solidifier": "^2.0.0"
 	},
 	"scripts": {
 		"start": "gatsby develop",
