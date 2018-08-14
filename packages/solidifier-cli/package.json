@@ -11,6 +11,7 @@
 		"solidifier": "./index.js"
 	},
 	"dependencies": {
+		"mkdirp": "^0.5.1",
 		"yargs": "^11.0.0"
 	}
 }

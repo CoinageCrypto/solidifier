@@ -10,6 +10,16 @@
       "name": "Debug Website in Chrome",
       "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug CLI with Node",
+      "program": "${workspaceFolder}/packages/solidifier-cli/index.js",
+      "args": [
+        "-i", "../../havven/havven",
+        "-o", "../../havven/havven/flattened"
+      ]
     }
   ]
 }

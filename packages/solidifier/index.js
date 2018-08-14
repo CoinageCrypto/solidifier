@@ -1,4 +1,4 @@
-import parser from 'solidity-parser-antlr';
+const parser = require('solidity-parser-antlr');
 
 const getImportsInFile = contents => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });
@@ -26,11 +26,15 @@ const getPragmasInFile = contents => {
 
 const getFileContents = fileObject => (
 	new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = () => resolve(reader.result);
-		reader.onerror = () => reject(reader.error);
+		if (fileObject.textContents) {
+			return resolve(fileObject.textContents);
+		} else {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = () => reject(reader.error);
 
-		reader.readAsText(fileObject);
+			reader.readAsText(fileObject);
+		}
 	})
 );
 
@@ -80,18 +84,14 @@ const removeByLoc = (contents, loc) => {
 	return lines.join('\n');
 };
 
-const resolvePath = (basePath, relativePath) => {
-	const base = basePath.split('/');
-
-	// The base path is the actual .sol file we found the import in, e.g. "whatever.sol" or "whatever/thing/something.sol";
-	// So when we split, we need to remove the .sol file from the path to get the base folder of the contract.
-	base.pop();
+const resolvePath = (workingDirectory, relativePath) => {
+	const base = workingDirectory ? workingDirectory.split('/') : [];
 
 	// Ok, now walk through the relative path, ignoring '.' and construct a new path.
 	for (const chunk of relativePath.split('/')) {
 		if (chunk === '..') {
 			base.pop();
-		} else if (chunk !== '.' && chunk !== base[base.length - 1]) {
+		} else if (chunk !== '.') {
 			base.push(chunk);
 		}
 	}
@@ -99,38 +99,9 @@ const resolvePath = (basePath, relativePath) => {
 	return base.join('/');
 };
 
-export const flatten = async ({ files, path, insertFileNames, stripExcessWhitespace }) => {
-	const visited = new Set();
-
-	let content = await visit({ path, files, visited, insertFileNames });
-
-	// Now we need to strip all but the first pragma statement.
-	const pragmas = getPragmasInFile(content);
-
-	// Ignore the first one.
-	pragmas.shift();
-
-	// Strip the rest
-	for (const pragma of pragmas) {
-		content = removeByLoc(content, pragma.loc);
-	}
-
-	if (stripExcessWhitespace) {
-		content = removeExcessWhitespace(content);
-	}
-
-	return `/* ===============================================
- * Flattened with Solidifier by Coinage
- * 
- * https://solidifier.coina.ge
- * ===============================================
-*/
-${content}
-`;
-};
 
 // Depth first visit, outputting the leaves first.
-const visit = async ({ path, files, visited, insertFileNames }) => {
+const visit = async ({ path, workingDirectory, files, visited, insertFileNames }) => {
 	if (visited.has(path)) return '';
 	visited.add(path);
 
@@ -151,7 +122,8 @@ const visit = async ({ path, files, visited, insertFileNames }) => {
 		contentsToAppend += `
 
 ${await visit({
-			path: resolvePath(path, importStatement.path),
+			path: resolvePath(workingDirectory, importStatement.path),
+			workingDirectory,
 			files,
 			visited,
 			insertFileNames,
@@ -171,4 +143,36 @@ ${await visit({
 ${contents}`;
 
 	return result;
+};
+
+module.exports = {
+	flatten: async ({ files, path, insertFileNames, stripExcessWhitespace }) => {
+		const visited = new Set();
+
+		let content = await visit({ path, files, visited, insertFileNames });
+
+		// Now we need to strip all but the first pragma statement.
+		const pragmas = getPragmasInFile(content);
+
+		// Ignore the first one.
+		pragmas.shift();
+
+		// Strip the rest
+		for (const pragma of pragmas) {
+			content = removeByLoc(content, pragma.loc);
+		}
+
+		if (stripExcessWhitespace) {
+			content = removeExcessWhitespace(content);
+		}
+
+		return `/* ===============================================
+* Flattened with Solidifier by Coinage
+* 
+* https://solidifier.coina.ge
+* ===============================================
+*/
+${content}
+`;
+	}
 };
