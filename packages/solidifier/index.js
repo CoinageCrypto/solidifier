@@ -30,7 +30,7 @@ const getFileContents = fileObject => (
 		if (fileObject.textContents) {
 			return resolve(fileObject.textContents);
 		} else {
-			const reader = new FileReader();
+			const reader = new window.FileReader();
 			reader.onload = () => resolve(reader.result);
 			reader.onerror = () => reject(reader.error);
 
