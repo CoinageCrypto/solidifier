@@ -1,3 +1,4 @@
+const nodePath = require('path');
 const parser = require('solidity-parser-antlr');
 
 const getImportsInFile = contents => {
@@ -108,7 +109,19 @@ const visit = async ({ path, workingDirectory, files, visited, insertFileNames }
 	if (!files[path]) throw new Error(`Unable to find contract at path '${path}'. Most likely you need to start from a different base directory when you drag your contracts in, or it is also possible that your contracts don't compile.`);
 	let contents = await getFileContents(files[path]);
 
-	const importStatements = getImportsInFile(contents);
+	const relativeImportPath = nodePath.join(path, '..');
+	const importStatements = getImportsInFile(contents).map(x => {
+		// Imports that starts with a '.' are relative imports
+		if (x.path[0] === '.') {
+			return Object.assign(
+				{}, { ...x }, {
+					path: nodePath.join(relativeImportPath, x.path),
+				}
+			);
+		}
+		return x;
+	});
+
 
 	// Remove the import statements first so the line numbers match up.
 	for (const importStatement of importStatements) {
