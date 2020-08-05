@@ -193,13 +193,6 @@ module.exports = {
 			content = removeExcessWhitespace(content);
 		}
 
-		return `/* ===============================================
-* Flattened with Solidifier by Coinage
-* 
-* https://solidifier.coina.ge
-* ===============================================
-*/
-${content}
-`;
+		return content;
 	}
 };
