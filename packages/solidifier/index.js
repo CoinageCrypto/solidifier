@@ -25,6 +25,24 @@ const getPragmasInFile = contents => {
 	return pragmas;
 };
 
+const duplicatedPragmas = pragmas => {
+	const seen = [];
+	const duplicates = [];
+
+	for (const pragma of pragmas) {
+		// We can have different experimental pragmas but only one version pragma.
+		const name = pragma.name === 'experimental' ? pragma.value : pragma.name;
+
+		if (seen.includes(name)) {
+			duplicates.push(pragma);
+		} else {
+			seen.push(name);
+		}
+	}
+
+	return duplicates;
+}
+
 const getFileContents = fileObject => (
 	new Promise((resolve, reject) => {
 		if (fileObject.textContents) {
@@ -164,14 +182,10 @@ module.exports = {
 
 		let content = await visit({ path, files, visited, insertFileNames });
 
-		// Now we need to strip all but the first pragma statement.
+		// Now we need to strip all of the duplicated pragma statements.
 		const pragmas = getPragmasInFile(content);
 
-		// Ignore the first one.
-		pragmas.shift();
-
-		// Strip the rest
-		for (const pragma of pragmas) {
+		for (const pragma of duplicatedPragmas(pragmas)) {
 			content = removeByLoc(content, pragma.loc);
 		}
 
