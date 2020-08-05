@@ -1,10 +1,13 @@
 {
-	"private": true,
-	"scripts": {
-		"build": "cd packages/solidifier-website && yarn build",
-		"start": "cd packages/solidifier-website && yarn start"
-	},
-	"workspaces": [
-		"packages/*"
-	]
+	"name": "solidifier",
+	"version": "2.2.0",
+	"description": "Solidity flattener.",
+	"main": "index.js",
+	"repository": "https://github.com/Synthetixio/solidifier.git",
+	"author": "Kevin Brown",
+	"license": "MIT",
+	"private": false,
+	"dependencies": {
+		"solidity-parser-antlr": "^0.3.0"
+	}
 }
