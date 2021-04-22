@@ -1,6 +1,6 @@
 {
 	"name": "solidifier",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"description": "Solidity flattener.",
 	"main": "index.js",
 	"repository": "https://github.com/Synthetixio/solidifier.git",
