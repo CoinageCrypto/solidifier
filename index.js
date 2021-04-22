@@ -1,5 +1,5 @@
 const nodePath = require('path');
-const parser = require('solidity-parser-antlr');
+const parser = require('@solidity-parser/parser');
 
 const getImportsInFile = contents => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });

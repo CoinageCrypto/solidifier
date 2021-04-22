@@ -8,6 +8,6 @@
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"solidity-parser-antlr": "^0.3.0"
+		"@solidity-parser/parser": "^0.12.1"
 	}
 }
