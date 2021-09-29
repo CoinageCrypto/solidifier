@@ -1,0 +1,18 @@
+{
+	"name": "solidifier",
+	"version": "2.1.0",
+	"description": "The flattening logic used from the CLI as well as the website to flatten solidity files.",
+	"main": "index.js",
+	"repository": "https://github.com/CoinageCrypto/solidifier.git",
+	"author": "Kevin Brown",
+	"license": "MIT",
+	"private": false,
+	"dependencies": {
+		"solidity-parser-antlr": "^0.3.0"
+	},
+	"bin": "./cli.js",
+	"scripts": {
+		"start": "gatsby develop",
+		"build": "gatsby build"
+	}
+}

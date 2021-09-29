@@ -7,7 +7,14 @@
 	"author": "Kevin Brown",
 	"license": "MIT",
 	"private": false,
+	"scripts": {
+		"build": "cd packages/solidifier-website && yarn build",
+		"start": "cd packages/solidifier-website && yarn start"
+	},
 	"dependencies": {
 		"@solidity-parser/parser": "^0.12.1"
-	}
+	},
+	"workspaces": [
+		"packages/*"
+	]
 }

@@ -1,31 +1,31 @@
 const nodePath = require('path');
 const parser = require('@solidity-parser/parser');
 
-const getImportsInFile = contents => {
+const getImportsInFile = (contents) => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });
 	const imports = [];
 
 	// Search for import directives
 	parser.visit(ast, {
-		ImportDirective: node => imports.push(node),
+		ImportDirective: (node) => imports.push(node),
 	});
 
 	return imports;
 };
 
-const getPragmasInFile = contents => {
+const getPragmasInFile = (contents) => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });
 	const pragmas = [];
 
 	// Search for import directives
 	parser.visit(ast, {
-		PragmaDirective: node => pragmas.push(node),
+		PragmaDirective: (node) => pragmas.push(node),
 	});
 
 	return pragmas;
 };
 
-const duplicatedPragmas = pragmas => {
+const duplicatedPragmas = (pragmas) => {
 	const seen = [];
 	const duplicates = [];
 
@@ -41,9 +41,9 @@ const duplicatedPragmas = pragmas => {
 	}
 
 	return duplicates;
-}
+};
 
-const getFileContents = fileObject => (
+const getFileContents = (fileObject) =>
 	new Promise((resolve, reject) => {
 		if (fileObject.textContents) {
 			return resolve(fileObject.textContents);
@@ -54,10 +54,9 @@ const getFileContents = fileObject => (
 
 			reader.readAsText(fileObject);
 		}
-	})
-);
+	});
 
-const removeExcessWhitespace = contents => {
+const removeExcessWhitespace = (contents) => {
 	const lines = contents.split(/\r?\n/);
 	const resultingLines = [];
 
@@ -118,28 +117,31 @@ const resolvePath = (workingDirectory, relativePath) => {
 	return base.join('/');
 };
 
-
 // Depth first visit, outputting the leaves first.
 const visit = async ({ path, workingDirectory, files, visited, insertFileNames }) => {
 	if (visited.has(path)) return '';
 	visited.add(path);
 
-	if (!files[path]) throw new Error(`Unable to find contract at path '${path}'. Most likely you need to start from a different base directory when you drag your contracts in, or it is also possible that your contracts don't compile.`);
+	if (!files[path])
+		throw new Error(
+			`Unable to find contract at path '${path}'. Most likely you need to start from a different base directory when you drag your contracts in, or it is also possible that your contracts don't compile.`
+		);
 	let contents = await getFileContents(files[path]);
 
 	const relativeImportPath = nodePath.join(path, '..');
-	const importStatements = getImportsInFile(contents).map(x => {
+	const importStatements = getImportsInFile(contents).map((x) => {
 		// Imports that starts with a '.' are relative imports
 		if (x.path[0] === '.') {
 			return Object.assign(
-				{}, { ...x }, {
+				{},
+				{ ...x },
+				{
 					path: nodePath.join(relativeImportPath, x.path),
 				}
 			);
 		}
 		return x;
 	});
-
 
 	// Remove the import statements first so the line numbers match up.
 	for (const importStatement of importStatements) {
@@ -153,12 +155,12 @@ const visit = async ({ path, workingDirectory, files, visited, insertFileNames }
 		contentsToAppend += `
 
 ${await visit({
-			path: resolvePath(workingDirectory, importStatement.path),
-			workingDirectory,
-			files,
-			visited,
-			insertFileNames,
-		})}`;
+	path: resolvePath(workingDirectory, importStatement.path),
+	workingDirectory,
+	files,
+	visited,
+	insertFileNames,
+})}`;
 	}
 
 	let result = contentsToAppend;
@@ -194,5 +196,5 @@ module.exports = {
 		}
 
 		return content;
-	}
+	},
 };
