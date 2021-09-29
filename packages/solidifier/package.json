@@ -1,6 +1,6 @@
 {
 	"name": "solidifier",
-	"version": "2.1.0",
+	"version": "2.2.3",
 	"description": "The flattening logic used from the CLI as well as the website to flatten solidity files.",
 	"main": "index.js",
 	"repository": "https://github.com/CoinageCrypto/solidifier.git",
@@ -8,7 +8,7 @@
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"solidity-parser-antlr": "^0.3.0"
+		"@solidity-parser/parser": "0.12.1"
 	},
 	"bin": "./cli.js",
 	"scripts": {

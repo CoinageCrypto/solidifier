@@ -1,31 +1,31 @@
 const nodePath = require('path');
 const parser = require('@solidity-parser/parser');
 
-const getImportsInFile = (contents) => {
+const getImportsInFile = contents => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });
 	const imports = [];
 
 	// Search for import directives
 	parser.visit(ast, {
-		ImportDirective: (node) => imports.push(node),
+		ImportDirective: node => imports.push(node),
 	});
 
 	return imports;
 };
 
-const getPragmasInFile = (contents) => {
+const getPragmasInFile = contents => {
 	const ast = parser.parse(contents, { tolerant: true, loc: true });
 	const pragmas = [];
 
 	// Search for import directives
 	parser.visit(ast, {
-		PragmaDirective: (node) => pragmas.push(node),
+		PragmaDirective: node => pragmas.push(node),
 	});
 
 	return pragmas;
 };
 
-const duplicatedPragmas = (pragmas) => {
+const duplicatedPragmas = pragmas => {
 	const seen = [];
 	const duplicates = [];
 
@@ -43,7 +43,7 @@ const duplicatedPragmas = (pragmas) => {
 	return duplicates;
 };
 
-const getFileContents = (fileObject) =>
+const getFileContents = fileObject =>
 	new Promise((resolve, reject) => {
 		if (fileObject.textContents) {
 			return resolve(fileObject.textContents);
@@ -56,7 +56,7 @@ const getFileContents = (fileObject) =>
 		}
 	});
 
-const removeExcessWhitespace = (contents) => {
+const removeExcessWhitespace = contents => {
 	const lines = contents.split(/\r?\n/);
 	const resultingLines = [];
 
@@ -129,7 +129,7 @@ const visit = async ({ path, workingDirectory, files, visited, insertFileNames }
 	let contents = await getFileContents(files[path]);
 
 	const relativeImportPath = nodePath.join(path, '..');
-	const importStatements = getImportsInFile(contents).map((x) => {
+	const importStatements = getImportsInFile(contents).map(x => {
 		// Imports that starts with a '.' are relative imports
 		if (x.path[0] === '.') {
 			return Object.assign(
@@ -155,12 +155,12 @@ const visit = async ({ path, workingDirectory, files, visited, insertFileNames }
 		contentsToAppend += `
 
 ${await visit({
-	path: resolvePath(workingDirectory, importStatement.path),
-	workingDirectory,
-	files,
-	visited,
-	insertFileNames,
-})}`;
+			path: resolvePath(workingDirectory, importStatement.path),
+			workingDirectory,
+			files,
+			visited,
+			insertFileNames,
+		})}`;
 	}
 
 	let result = contentsToAppend;

@@ -1,6 +1,6 @@
 {
 	"name": "solidifier-cli",
-	"version": "2.1.0",
+	"version": "2.2.3",
 	"description": "The command line interface for soldifier",
 	"main": "index.js",
 	"repository": "https://github.com/CoinageCrypto/solidifier.git",
@@ -12,7 +12,7 @@
 	},
 	"dependencies": {
 		"mkdirp": "1.0.4",
-		"solidifier": "2.1.0",
+		"solidifier": "2.2.3",
 		"yargs": "15.4.0"
 	}
 }
